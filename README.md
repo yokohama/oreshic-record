@@ -6,7 +6,7 @@ OreshicRecord is a CLI-based knowledge management tool inspired by the concept o
 It is designed for engineers who work primarily in the Linux terminal environment.  
 PowerShell support is planned as a future extension.
 
-The name comes from "Ore" (俺, meaning "I" in Japanese) + Record.
+The name comes from `Ore` (`俺`, meaning `I` in Japanese) + Record.
 
 **Let's  Keep happy hacking and Keep growing forever!!**
 
