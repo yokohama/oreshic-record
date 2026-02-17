@@ -1,0 +1,19 @@
+[package]
+name = "oreshic-record"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "ors"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.5.57", features = ["derive"] }
+minijinja = "1"
+anyhow = "1"
+portable-pty = "0.8"
+termios = "0.3"
+nix = { version = "0.27", features = ["poll", "term", "signal", "process"] }
+terminal_size = "0.2"
+unicode-width = "0.1"
+colored = "2"
