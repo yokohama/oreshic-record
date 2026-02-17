@@ -12,7 +12,7 @@ Let's  Keep happy hacking and Keep growing forever!!
 
 ---
 
-## Point
+## Highlights
 
 ### Knowledge Accumulation
 
