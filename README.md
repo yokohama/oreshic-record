@@ -8,7 +8,7 @@ PowerShell support is planned as a future extension.
 
 The name comes from "Ore" (俺, meaning "I" in Japanese) + Record.
 
-Let's  Keep happy hacking and Keep growing forever!!
+**Let's  Keep happy hacking and Keep growing forever!!**
 
 ---
 
