@@ -87,8 +87,8 @@ fn print_row_colored(cols: &[String], widths: &[usize]) {
 
             let colored = match col_i {
                 0 => padded.green().to_string(),
-                1 => padded.white().to_string(),
-                _ => padded.bright_black().to_string(),
+                1 => padded.bright_black().to_string(),
+                _ => padded.white().to_string(),
             };
 
             print!("{}", colored);

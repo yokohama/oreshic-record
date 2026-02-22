@@ -17,3 +17,4 @@ nix = { version = "0.27", features = ["poll", "term", "signal", "process"] }
 terminal_size = "0.2"
 unicode-width = "0.1"
 colored = "2"
+tempfile = "3"

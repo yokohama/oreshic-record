@@ -3,10 +3,11 @@ use std::{
     env,
     path::{Path, PathBuf},
     iter::Peekable,
-    process::{Command, Stdio},
+    process::Command,
     io::Write,
 };
 
+use tempfile::NamedTempFile;
 use anyhow::Result;
 use minijinja::{Environment, context};
 
@@ -185,16 +186,17 @@ pub fn print_section(section: &Record) -> Result<()> {
     })?;
 
     if let Ok(viewer) = env::var("MD_VIEWER") {
-        let mut child = Command::new(viewer)
-            .stdin(Stdio::piped())
-            .spawn()?;
+        let mut tmp = NamedTempFile::new()?;
+        tmp.write_all(content.as_bytes())?;
+    
+        let path = tmp.path();
 
-        if let Some(stdin) = &mut child.stdin {
-            stdin.write_all(content.as_bytes())?;
-        }
-
-        let status = child.wait()?;
-
+        println!("{:?}", path);
+    
+        let status = Command::new(viewer)
+            .arg(path)
+            .status()?;
+    
         if !status.success() {
             anyhow::bail!("viewer exited with error");
         }
@@ -211,15 +213,10 @@ pub fn print_md(path: &Path) -> Result<()> {
     let content = fs::read_to_string(path)?;
 
     if let Ok(viewer) = env::var("MD_VIEWER") {
-        let mut child = Command::new(viewer)
-            .stdin(Stdio::piped())
-            .spawn()?;
+        let status = Command::new(viewer)
+            .arg(path)
+            .status()?;
 
-        if let Some(stdin) = &mut child.stdin {
-            stdin.write_all(content.as_bytes())?;
-        }
-
-        let status = child.wait()?;
         if !status.success() {
             anyhow::bail!("viewer exited with error");
         }
