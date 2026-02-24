@@ -7,7 +7,7 @@ use std::{
     io::Write,
 };
 
-use tempfile::NamedTempFile;
+use tempfile::Builder;
 use anyhow::Result;
 use minijinja::{Environment, context};
 
@@ -186,15 +186,11 @@ pub fn print_section(section: &Record) -> Result<()> {
     })?;
 
     if let Ok(viewer) = env::var("MD_VIEWER") {
-        let mut tmp = NamedTempFile::new()?;
+        let mut tmp = Builder::new().suffix(".md").tempfile()?;
         tmp.write_all(content.as_bytes())?;
-    
-        let path = tmp.path();
 
-        println!("{:?}", path);
-    
         let status = Command::new(viewer)
-            .arg(path)
+            .arg(tmp.path())
             .status()?;
     
         if !status.success() {
@@ -211,10 +207,19 @@ pub fn print_section(section: &Record) -> Result<()> {
 
 pub fn print_md(path: &Path) -> Result<()> {
     let content = fs::read_to_string(path)?;
+    let converted = convert_image_paths(&content);
 
     if let Ok(viewer) = env::var("MD_VIEWER") {
-        let status = Command::new(viewer)
-            .arg(path)
+        let mut temp = Builder::new().suffix(".md").tempfile()?;
+        temp.write_all(converted.as_bytes())?;
+
+        let parts: Vec<&str> = viewer.split_whitespace().collect();
+        let cmd = parts[0];
+        let args = &parts[1..];
+
+        let status = Command::new(cmd)
+            .args(args)
+            .arg(temp.path())
             .status()?;
 
         if !status.success() {
@@ -224,9 +229,21 @@ pub fn print_md(path: &Path) -> Result<()> {
         return Ok(());
     }
 
-    println!("{}", content);
+    println!("{}", converted);
 
     Ok(())
+}
+
+fn convert_image_paths(content: &str) -> String {
+    let base_dir = match env::var("ORS_RECORDS_DIR") {
+        Ok(dir) => dir,
+        Err(_) => return content.to_string(),
+    };
+
+    let abs_images_dir = Path::new(&base_dir).join("images");
+    let abs_images_str = abs_images_dir.to_string_lossy();
+
+    content.replace("](./images/", &format!("]({}/", abs_images_str))
 }
 
 fn read_plain_block<'a, I>(
