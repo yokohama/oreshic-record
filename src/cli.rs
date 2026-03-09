@@ -143,7 +143,7 @@ pub struct RecordArgs {
     #[arg(short, long)]
     pub pty: bool,
 
-    /// Title of the record (used as a query serach target)
+    /// Title of the record (used as a query search target)
     #[arg(short, long)]
     pub title: Option<String>,
 

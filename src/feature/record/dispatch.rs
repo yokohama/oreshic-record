@@ -59,7 +59,7 @@ fn run_with_executor<T: RecordExecutor>(
     let _ = md.write(ctx);
 
     if let Some(t) = &track_name {
-        executor::print_track_banner("Rcorded", t.to_string());
+        executor::print_track_banner("Recorded", t.to_string());
     }
 
     Ok(())

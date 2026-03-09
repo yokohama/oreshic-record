@@ -126,7 +126,7 @@ impl SearchExecutor for Query {
                     }
                 }
             } else if self.open {
-                flag::open::exe(&section.path)?;
+                flag::open::exe_at_line(&section.path, section.start_line)?;
             } else {
                 match section.record_type {
                     RecordType::Writeup => {

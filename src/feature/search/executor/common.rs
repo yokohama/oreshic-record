@@ -95,7 +95,7 @@ pub fn collect_sections(record: &Record) -> Result<Vec<Record>> {
         let trimmed = line.trim();
 
         if trimmed.starts_with("# ") {
-            let start_line = line_no + 0; // 1-based
+            let start_line = line_no; // 0-based
          
             let title = trimmed.trim_start_matches("# ").trim().to_string();
 
@@ -189,10 +189,15 @@ pub fn print_section(section: &Record) -> Result<()> {
         let mut tmp = Builder::new().suffix(".md").tempfile()?;
         tmp.write_all(content.as_bytes())?;
 
-        let status = Command::new(viewer)
+        let parts: Vec<&str> = viewer.split_whitespace().collect();
+        let cmd = parts[0];
+        let args = &parts[1..];
+
+        let status = Command::new(cmd)
+            .args(args)
             .arg(tmp.path())
             .status()?;
-    
+
         if !status.success() {
             anyhow::bail!("viewer exited with error");
         }
@@ -372,6 +377,14 @@ pub fn collect_records(base_dir: &Path) -> Result<Vec<Record>> {
     }
 
     walk(base_dir, &mut index, &mut records)?;
+
+    // fs::read_dir の順序は保証されないためソート
+    records.sort_by(|a, b| a.path.cmp(&b.path));
+
+    // ソート後にインデックスを振り直す
+    for (i, record) in records.iter_mut().enumerate() {
+        record.index = i;
+    }
 
     Ok(records)
 }
