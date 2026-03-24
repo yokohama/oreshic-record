@@ -210,6 +210,26 @@ pub fn print_section(section: &Record) -> Result<()> {
     Ok(())
 }
 
+pub fn print_section_raw(section: &Record) -> Result<()> {
+    let mut env_jinja = Environment::new();
+    env_jinja.add_template("section", TEMPLATE_PATH)?;
+
+    let tmpl = env_jinja.get_template("section")?;
+
+    let content = tmpl.render(context! {
+       title => section.title.clone().unwrap_or("{none}".to_string()),
+       message => section.message.clone().unwrap_or("{none}".to_string()),
+       command => section.command,
+       mode => section.mode,
+       result => section.result.clone().unwrap_or("{none}".to_string()),
+       tag => section.tags.join(","),
+    })?;
+
+    println!("{}", content);
+
+    Ok(())
+}
+
 pub fn print_md(path: &Path) -> Result<()> {
     let content = fs::read_to_string(path)?;
     let converted = convert_image_paths(&content);
@@ -236,6 +256,12 @@ pub fn print_md(path: &Path) -> Result<()> {
 
     println!("{}", converted);
 
+    Ok(())
+}
+
+pub fn print_md_raw(path: &Path) -> Result<()> {
+    let content = fs::read_to_string(path)?;
+    println!("{}", content);
     Ok(())
 }
 

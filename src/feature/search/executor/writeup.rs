@@ -13,18 +13,21 @@ use crate::{
 };
 
 pub struct Writeup {
-    pub number: Vec<usize>, 
+    pub number: Vec<usize>,
     pub open: bool,
+    pub cat: bool,
 }
 
 impl Writeup {
     pub fn new(
         number: Vec<usize>,
         open: bool,
+        cat: bool,
     ) -> Self {
         Self {
             number,
             open,
+            cat,
         }
     }
 }
@@ -44,6 +47,8 @@ impl SearchExecutor for Writeup {
 
                 if self.open {
                     flag::open::exe(&md.path)?;
+                } else if self.cat {
+                    common::print_md_raw(&md.path)?;
                 } else {
                     common::print_md(&md.path)?;
                 }

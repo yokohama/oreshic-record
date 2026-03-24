@@ -13,27 +13,27 @@ use crate::{
 
 pub fn run(args: SearchArgs, ctx: &Context) -> Result<()> {
     match args.command {
-        SearchCommands::Command { number, run, del, open } => {
+        SearchCommands::Command { number, run, del, open, cat } => {
             run_with_executor(
-                Command::new(number, run, del, open, false),
+                Command::new(number, run, del, open, cat, false),
                 &ctx,
             )
         },
-        SearchCommands::Track { number, run, del, open } => {
+        SearchCommands::Track { number, run, del, open, cat } => {
             run_with_executor(
-                Command::new(number, run, del, open, true),
+                Command::new(number, run, del, open, cat, true),
                 &ctx,
             )
         },
-        SearchCommands::Query { word, number, run, del, open } => {
+        SearchCommands::Query { word, number, run, del, open, cat } => {
             run_with_executor(
-                Query::new(word, number, run, del, open),
+                Query::new(word, number, run, del, open, cat),
                 &ctx,
             )
         },
-        SearchCommands::Writeup { number, open } => {
+        SearchCommands::Writeup { number, open, cat } => {
             run_with_executor(
-                Writeup::new(number, open),
+                Writeup::new(number, open, cat),
                 &ctx,
             )
         },

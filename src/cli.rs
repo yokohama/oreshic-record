@@ -41,7 +41,7 @@ pub enum SearchCommands {
     #[command(
         group(
             ArgGroup::new("action")
-                .args(["run", "del", "open"])
+                .args(["run", "del", "open", "cat"])
                 .multiple(false)
                 .required(false)
         )
@@ -62,12 +62,15 @@ pub enum SearchCommands {
 
         #[arg(long)]
         open: bool,
+
+        #[arg(long)]
+        cat: bool,
     },
 
     #[command(
         group(
             ArgGroup::new("action")
-                .args(["run", "del", "open"])
+                .args(["run", "del", "open", "cat"])
                 .multiple(false)
                 .required(false)
         )
@@ -88,12 +91,15 @@ pub enum SearchCommands {
 
         #[arg(long)]
         open: bool,
+
+        #[arg(long)]
+        cat: bool,
     },
 
     #[command(
         group(
             ArgGroup::new("action")
-                .args(["run", "del", "open"])
+                .args(["run", "del", "open", "cat"])
                 .multiple(false)
                 .required(false)
         )
@@ -113,12 +119,15 @@ pub enum SearchCommands {
 
         #[arg(long)]
         open: bool,
+
+        #[arg(long)]
+        cat: bool,
     },
 
     #[command(
         group(
             ArgGroup::new("action")
-                .args(["open"])
+                .args(["open", "cat"])
                 .multiple(false)
                 .required(false)
         )
@@ -129,6 +138,9 @@ pub enum SearchCommands {
 
         #[arg(long)]
         open: bool,
+
+        #[arg(long)]
+        cat: bool,
     },
 }
 

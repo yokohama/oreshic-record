@@ -18,10 +18,11 @@ use crate::{
 };
 
 pub struct Command {
-    pub number: Vec<usize>, 
-    pub run: bool, 
+    pub number: Vec<usize>,
+    pub run: bool,
     pub del: bool,
     pub open: bool,
+    pub cat: bool,
     pub is_track: bool,
 }
 
@@ -31,6 +32,7 @@ impl Command {
         run: bool,
         del: bool,
         open: bool,
+        cat: bool,
         is_track: bool,
     ) -> Self {
         Self {
@@ -38,6 +40,7 @@ impl Command {
             run,
             del,
             open,
+            cat,
             is_track,
         }
     }
@@ -66,6 +69,8 @@ impl SearchExecutor for Command {
 
                 if self.open {
                     flag::open::exe(&md.path)?;
+                } else if self.cat {
+                    common::print_md_raw(&md.path)?;
                 } else {
                     section_records::print_section_table(&sections)
                 }
@@ -98,6 +103,10 @@ impl SearchExecutor for Command {
                         start_line,
                         end_line
                     )?;
+                } else if self.open {
+                    flag::open::exe_at_line(&md.path, section.start_line)?;
+                } else if self.cat {
+                    common::print_section_raw(section)?;
                 } else {
                     common::print_section(section)?
                 }

@@ -15,10 +15,11 @@ use crate::{
 
 pub struct Query {
     pub word: String,
-    pub number: Option<usize>, 
-    pub run: bool, 
+    pub number: Option<usize>,
+    pub run: bool,
     pub del: bool,
     pub open: bool,
+    pub cat: bool,
 }
 
 impl Query {
@@ -28,6 +29,7 @@ impl Query {
         run: bool,
         del: bool,
         open: bool,
+        cat: bool,
     ) -> Self {
         Self {
             word,
@@ -35,6 +37,7 @@ impl Query {
             run,
             del,
             open,
+            cat,
         }
     }
 }
@@ -127,6 +130,15 @@ impl SearchExecutor for Query {
                 }
             } else if self.open {
                 flag::open::exe_at_line(&section.path, section.start_line)?;
+            } else if self.cat {
+                match section.record_type {
+                    RecordType::Writeup => {
+                        common::print_md_raw(&section.path)?;
+                    },
+                    _ => {
+                        common::print_section_raw(section)?;
+                    }
+                }
             } else {
                 match section.record_type {
                     RecordType::Writeup => {
