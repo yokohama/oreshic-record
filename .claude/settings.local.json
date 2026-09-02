@@ -6,7 +6,9 @@
       "Bash(cargo build:*)",
       "Bash(grep:*)",
       "WebFetch(domain:github.com)",
-      "Bash(export:*)"
+      "Bash(export:*)",
+      "Read(//home/banister/projects/oreshic-record.wiki/**)",
+      "Bash(mv codes/tcp_client.md codes/tcp_client.py.md)"
     ]
   }
 }

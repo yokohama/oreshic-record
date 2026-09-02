@@ -88,7 +88,12 @@ impl SearchExecutor for Query {
                         .map(|s| s.to_lowercase().contains(word))
                         .unwrap_or(false);
                 },
-                _ => (),
+                RecordType::Writeup => {
+                    title_hit = section.path
+                        .to_string_lossy()
+                        .to_lowercase()
+                        .contains(word);
+                },
             };
 
             let tag_hit = section
